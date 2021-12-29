@@ -27,7 +27,9 @@ router.get(`/new`, (req, res) => {
 // Create Result Route
 router.post(`/`, async (req, res) => {
     const result = new Result({
-        name: req.body.name
+        name: req.body.name,
+        href: req.body.href,
+        dsc: req.body.dsc
     });
     try {
         const newResult = await result.save();
