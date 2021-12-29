@@ -14,11 +14,11 @@ const resultSchema = new mongoose.Schema({
         required: false
     },
     source: {
-        name: {
+        sourceName: {
             type: String,
             required: false
         },
-        href: {
+        sourceLink: {
             type: String,
             required: false
         }

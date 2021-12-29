@@ -31,8 +31,8 @@ router.post(`/`, async (req, res) => {
         href: req.body.href,
         dsc: req.body.dsc,
         source: {
-            name: req.body.source,
-            href: req.body.sourceLink
+            sourceName: req.body.sourceName,
+            sourceLink: req.body.sourceLink
         }
     });
     try {
