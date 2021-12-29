@@ -10,10 +10,14 @@ const passport = require(`passport`);
 const flash = require(`express-flash`);
 const session = require(`express-session`);
 const methodOverride = require(`method-override`);
+const bodyParser = require(`body-parser`);
 
 const loginRouter = require(`./routes/login`);
 const indexRouter = require(`./routes/index`);
 const registerRouter = require(`./routes/register`);
+const resultRouter = require(`./routes/results`);
+const tableRouter = require(`./routes/tables`);
+const genRouter = require(`./routes/gen`);
 
 const initializePassport = require(`./passport-config`);
 initializePassport(
@@ -27,6 +31,7 @@ app.set(`views`, __dirname + `/views`);
 app.set(`layout`, `layouts/layout`);
 app.use(expressLayouts);
 app.use(express.static(`public`));
+app.use(bodyParser.urlencoded({ limit: `10mb`, extended: false }));
 
 const mongoose = require(`mongoose`);
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
@@ -49,6 +54,9 @@ app.use(methodOverride(`_method`));
 app.use(`/`, indexRouter);
 app.use(`/login`, loginRouter);
 app.use(`/register`, registerRouter);
+app.use(`/results`, resultRouter);
+app.use(`/tables`, tableRouter);
+app.use(`/gen`, genRouter);
 
 const users = [];
 
