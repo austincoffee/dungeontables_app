@@ -29,7 +29,11 @@ router.post(`/`, async (req, res) => {
     const result = new Result({
         name: req.body.name,
         href: req.body.href,
-        dsc: req.body.dsc
+        dsc: req.body.dsc,
+        source: {
+            name: req.body.source,
+            href: req.body.sourceLink
+        }
     });
     try {
         const newResult = await result.save();

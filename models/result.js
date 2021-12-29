@@ -12,6 +12,16 @@ const resultSchema = new mongoose.Schema({
     dsc: {
         type: String,
         required: false
+    },
+    source: {
+        name: {
+            type: String,
+            required: false
+        },
+        href: {
+            type: String,
+            required: false
+        }
     }
 });
 
