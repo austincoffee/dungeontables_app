@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html lang="en-US">
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Dungeon Tables</title>
+  <meta name="description" content="Create your own random generators!">
+  <meta name="author" content="Javaudio">
+
+  <meta property="og:title" content="Dungeon Tables">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.dungeontables.net/index.html">
+  <meta property="og:description" content="Create your own random generators!">
+  <meta property="og:image" content="image.png">
+
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" Type="text/css" href="dgt.css"/>
+  <link rel="stylesheet" href="https://use.typekit.net/dez0oov.css">
+</head>
+
+<body>
+  <div id="header">
+  </div> <!-- end header -->
+  <h2 class="current-page">Random Generator</h2>
+  <div id="main-sections">
+    <div class="main-section" id="select-table-cont">
+      <h3>Select a Table</h3>
+      <h4>Filters</h4>
+      <label class="filter-checkbox-label" for="check-are-loot">Loot tables
+        <input class="filter-checkbox" type="checkbox" id="check-are-loot" name="check-are-loot" value="areLoot" checked>
+        <span class="checkmark"></span>
+      </label>
+      <label class="filter-checkbox-label" for="check-are-eqp">Equipment tables
+        <input class="filter-checkbox" type="checkbox" id="check-are-eqp" name="check-are-eqp" value="areEqp">
+        <span class="checkmark"></span>
+      </label>
+      <!-- <label class="filter-checkbox-label"class="filter-checkbox-label" for="check-are-adjs">Adjective tables
+        <input class="filter-checkbox" type="checkbox" id="check-are-adjs" name="check-are-adjs" value="areAdjs">
+        <span class="checkmark"></span>
+      </label> -->
+      <div id="select-table-sub-cont">
+        <div id="fdts">
+        </div>
+      </div> <!-- end select-table-sub-cont -->
+      <div id="selected-table-cont">
+        <h4>Selected Table</h4>
+        <div id="sdt">
+        </div>
+      </div> <!-- end selected-table-cont -->
+    </div> <!-- end select-table-cont -->
+    <div class="main-section" id="rst-cont">
+      <h3>Random Result</h3>
+      <p id="rst"></p>
+    </div>
+    <div class="main-section" id="history-cont">
+      <h3 id="history-header">History</h3>
+      <div id="history">
+      </div>
+    </div>
+  </div> <!-- end main-sections -->
+  <footer>
+  </footer> <!-- end footer -->
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+crossorigin="anonymous"></script>
+<script type="module" src="dgt.js"></script>
+
+</html>

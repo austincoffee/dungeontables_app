@@ -10,9 +10,9 @@
 <br>
 <div>
     <label for="dsc">Description</label>
-    <input type="textarea" name="dsc" id="dsc" value="<%= result.dsc %>">
+    <textarea name="dsc" id="dsc"><%= result.dsc %></textarea>
 </div>
-<br>
+<!-- <br>
 <div>
     <div>
         <label for="sourceName">Source</label>
@@ -23,4 +23,40 @@
         <label for="sourceLink">Link to Source</label>
         <input type="text" name="sourceLink" id="sourceLink" value="<%= result.sourceLink %>">
     </div>
+</div> -->
+<!-- <div>
+    <h3>Traits</h3>
+    <table id="traits-table">
+        <thead>
+            <tr>
+                <th>Trait</th>
+                <td>Value</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    <input
+                    type="text"
+                    name="traitLabel1"
+                    id="traitLabel1"
+                    value="<%= result.traitLabel1 %>">
+                </th>
+                <td>
+                    <input
+                    type="text"
+                    name="trait1"
+                    id="trait1"
+                    value="<%= result.trait1 %>">
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+    <button type="button" id="add-trait">Add Trait</button>
 </div>
+<div>
+    <h3>Tags</h3>
+    <button type="button" id="add-tag">Add Tag</button>
+</div> -->

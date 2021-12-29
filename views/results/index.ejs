@@ -6,5 +6,8 @@
 </form>
 <br>
 <% results.forEach(result => { %>
-    <div><%= result.name %> </div>
+    <div><%= result.name %></div>
+    <a href="/results/<%= result.id %>">View</a>
+    <a href="/results/<%= result.id %>/edit">Edit</a>
+    <%- include(`../partials/deleteForm`, { url: `/results/${result.id}` }); %>
 <% }); %>

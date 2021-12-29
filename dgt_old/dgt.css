@@ -1,0 +1,434 @@
+:root {
+    --manilla-h: 42;
+    --manilla-s: 77%;
+    --manilla-l: 76%;
+    --manilla-a: .3;
+    --red-h: 3;
+    --red-s: 76%;
+    --red-l: 46%;
+    --red-a: 1;
+    --red-faded-h: 3;
+    --red-faded-s: 70%;
+    --red-faded-l: 40%;
+    --red-faded-a: .8;
+    --margin-small: 10px;
+    --border-radius: 5px;
+    --title-height: 55px;
+    --nav-height: 39px;
+    --footer-height: 100px;
+    --header-height: calc(var(--title-height) + var(--nav-height) + var(--margin-small) + var(--margin-small));
+}
+
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#main-sections {
+    width: 100%;
+    flex: 1 0 auto;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: flex-start;
+    /* gap: var(--margin-small); */
+}
+
+.main-section {
+    margin: var(--margin-small);
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 0px;
+    margin-bottom: var(--margin-small);
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), 1);
+    padding-left: 0;
+    height: var(--nav-height);
+}
+
+nav li a {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    /* padding: .75em; */
+    padding: var(--margin-small);
+}
+
+nav li a:hover {
+    background-color: hsla(var(--red-faded-h), var(--red-faded-s), var(--red-faded-l), var(--red-faded-a));
+    color: white;
+}
+
+nav li {
+    text-align: center;
+    display: inline-block;
+}
+
+nav ul li a.active {
+    background-color: hsla(var(--red-h), 70%, var(--red-l), var(--red-a));
+    color: white;
+}
+
+.active:hover {
+    cursor: default;
+}
+
+h2 + p {
+    margin-left: var(--margin-small);
+}
+
+#bdts {
+    margin: var(--margin-small);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--margin-small);
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+table.dt tfoot {
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), 1);
+}
+
+#history {
+    overflow-y: scroll;
+    width: 160px;
+}
+
+#history-cont {
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), var(--manilla-a));
+    border-style: solid;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.history-ent {
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    user-select: none;
+}
+
+.history-ent:hover {
+    cursor: pointer;
+    background-color: hsla(var(--red-faded-h), var(--red-faded-s), var(--red-faded-l), var(--red-faded-a));
+    color: white;
+}
+
+#select-table-cont table {
+    user-select: none;
+}
+
+#selected-table-cont table {
+    user-select: none;
+}
+
+#sdt th.pct {
+    padding-left: 0px;
+}
+
+#sdt th.name {
+    padding-left: var(--margin-small);
+}
+
+#sdt td.name {
+    padding-left: 5px;
+}
+
+#rst-cont {
+    padding: 20px;
+    flex-grow: 1;
+    border-style: solid;
+    border-radius: var(--border-radius);
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), var(--manilla-a));
+}
+
+html {
+    height: 100%;
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), .15);
+}
+
+button {
+    padding: .4em;
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), var(--manilla-a));
+}
+
+#rst-cont table th {
+    font-weight: normal;
+}
+
+#rst-cont table td {
+    font-weight: bold;
+}
+
+th.fdt-th {
+    font-weight: normal;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+#fdts tr.selected {
+    color: white;
+    background-color: hsla(var(--red-h), var(--red-s), var(--red-l), var(--red-a));
+}
+
+#sdt tr.selected {
+    color: white;
+    background-color: hsla(var(--red-faded-h), var(--red-faded-s), var(--red-faded-l), var(--red-faded-a));
+}
+
+#select-table-cont .filter-checkbox-label {
+    padding-right: 1.5em;
+}
+
+#fdts tbody tr:hover {
+    cursor: pointer;
+    background-color: hsla(var(--red-faded-h), var(--red-faded-s), var(--red-faded-l), var(--red-faded-a));
+    color: white;
+}
+
+#fdts table {
+    margin-top: var(--margin-small);
+    margin-right: 50px;
+}
+
+.tr-dark {
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), .6);
+}
+
+.tr-light {
+    background-color: hsla(42, 77%, 76%, .15);
+}
+
+thead {
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), 1);
+}
+
+#selected-table-cont {
+    margin-top: 3px;
+    /* margin-left: 50px; */
+}
+
+#selected-table-cont h4 {
+    width: 220px;
+    visibility: hidden;
+    margin-bottom: var(--margin-small);
+}
+
+#sdt td.pct {
+    padding-right: var(--margin-small);
+    padding-left: 0px;
+}
+
+#select-table-sub-cont {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#selected-table-cont {
+    display: inline-block;
+    vertical-align: top;
+}
+
+th, td {
+    border: none;
+    border-collapse: collapse;
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    word-break:break-all;
+}
+
+#rst-cont h4 {
+    font-size: 1.7em;
+    color: hsla(var(--red-h), 70%, var(--red-l), var(--red-a));
+    font-variant: small-caps;
+}
+
+#header {
+    height: var(--header-height);
+}
+
+footer {
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), 1);
+    height: var(--footer-height);
+    width: 100%;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+#select-table-cont {
+    padding: 20px;
+    border-style: solid;
+    border-radius: var(--border-radius);
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), var(--manilla-a));
+}
+
+h1 {
+    height: var(--title-height);
+    font-size: 3em;
+    margin: 0;
+    padding: var(--margin-small);
+    user-select: none;
+    font-variant: small-caps;
+    letter-spacing: .05rem;
+    font-weight: 949;
+}
+
+h1 a {
+    color: black;
+    text-decoration: none;
+}
+
+h2 {
+    margin: 0;
+    font-size: 2em;
+    padding: var(--margin-small);
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+#history-cont h3 {
+    padding-bottom: .4em;
+    padding: 20px;
+}
+
+h4 {
+    font-size: 1.25em;
+    margin-top: 17px;
+    margin-top: var(--margin-small);
+    margin-bottom: var(--margin-small);
+    margin-left: 0px;
+}
+
+/* Customize the label (the container) */
+.filter-checkbox-label {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 17px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+  
+  /* Hide the browser's default checkbox */
+.filter-checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+  
+  /* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: hsla(var(--manilla-h), var(--manilla-s), var(--manilla-l), var(--manilla-a));
+    border-style: solid;
+    border-width: 1px;
+    border-radius: var(--border-radius);
+}
+  
+  /* On mouse-over, add a grey background color */
+.filter-checkbox-label:hover input ~ .checkmark {
+    background-color: hsla(var(--red-faded-h), var(--red-faded-s), var(--red-faded-l), var(--red-faded-a));
+    border-style: solid;
+    border-width: 1px;
+}
+  
+  /* When the checkbox is checked, add a blue background */
+.filter-checkbox-label input:checked ~ .checkmark {
+    background-color: hsla(var(--red-h), 70%, var(--red-l), var(--red-a));
+}
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+  
+  /* Show the checkmark when checked */
+.filter-checkbox-label input:checked ~ .checkmark:after {
+    display: block;
+}
+  
+  /* Style the checkmark/indicator */
+.filter-checkbox-label .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+td.tri {
+    padding-left: var(--margin-small);
+    padding-right: var(--margin-small);
+}
+
+td.tri div.rt {
+    position: relative;
+}
+td.tri div.rt:after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 0px;
+    width: 0; 
+    height: 0; 
+    display: block;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid;
+}
+
+td.tri div.dn {
+    position: relative;
+}
+td.tri div.dn:after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -4px;
+    width: 0; 
+    height: 0; 
+    display: block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid;
+}

@@ -1,0 +1,7 @@
+<h2>Edit Result</h2>
+<form action="/results/<%= result.id %>?_method=PUT" method="POST">
+    <%- include(`_form_fields`); %>
+    <br>
+    <a href="/results/%<%= result.id %>">Cancel</a>
+    <button type="submit">Update</button>
+</form>
