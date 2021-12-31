@@ -1,1 +1,13 @@
-Browse Tables
+<h2>Browse Tables</h2>
+<form action="/tables" method="GET">
+    <label for="name">Name</label>
+    <input type="text" name="name" value="<%= searchOptions.name %>">
+    <button type="submit">Search</button>
+</form>
+<br>
+<% tables.forEach(table => { %>
+    <div><%= table.name %></div>
+    <a href="/tables/<%= table.id %>">View</a>
+    <a href="/tables/<%= table.id %>/edit">Edit</a>
+    <%- include(`../partials/deleteForm`, { url: `/tables/${table.id}` }); %>
+<% }); %>

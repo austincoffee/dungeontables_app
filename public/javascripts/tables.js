@@ -1,5 +1,6 @@
-import {u} from "./utils.js";
-export {T, R};
+const u = require(`./utils`);
+// import {u} from "./utils.js";
+// export {T, R};
 
 class T {
     constructor({
@@ -221,3 +222,4 @@ class R {
 
 // notes:
 
+module.exports = T; // and R ???

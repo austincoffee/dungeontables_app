@@ -1,0 +1,39 @@
+<div id="name-test">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" value="<%= table.name %>">
+</div>
+<br>
+<div>
+    <label for="dsc">Description</label>
+    <textarea name="dsc" id="dsc"><%= table.dsc %></textarea>
+</div>
+<br>
+<script>
+    // const addTableRow = () => {
+    //     const trCtr = $("#table tbody tr").length;
+    //     const tr = $(`<tr></tr>`);
+    //     const th = asbTH();
+    //     const td = $(`<td><input type="text"></td>`);
+    //     tr.append(th, td);
+    //     if (trCtr < 100) $(`#table`).append(tr);
+    // };
+    // const asbTH = () => {
+    //     const th = $(`<th></th>`);
+    //     const label = $(`<label for="result-select"></label>`);
+    //     const select = $(`<select id="result-select"></select>`);
+    //     th.append(label, select);
+    //     return th;
+    // };
+    // const removeTableRow = () => {
+    //     const trCtr = $("#table tbody tr").length;
+    //     if (trCtr > 1) $(`#table tbody tr:last-child`).remove();
+    // };
+    // $(document).ready(function() {
+    //     $(`#add-table-row-btn`).click(function() {
+    //         addTableRow();
+    //     });
+    //     $(`#remove-table-row-btn`).click(function() {
+    //         removeTableRow();
+    //     });
+    // });
+</script>

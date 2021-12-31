@@ -1,0 +1,5 @@
+<h2><%= outcome.name %></h2>
+<p><%= outcome.dsc %></p>
+<a href="<%= outcome.href %>">Link</a>
+<a href="/outcomes/<%= outcome.id %>/edit">Edit</a>
+<%- include(`../partials/deleteForm`, { url: `/outcomes/${outcome.id}` }); %> 

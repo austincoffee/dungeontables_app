@@ -1,0 +1,30 @@
+<h2><%= table.name %></h2>
+<form action="/tables/<%= table.id %>/gen" method="POST">
+    <button type="submit">Generate!</button>
+</form>
+<p><%= table.dsc %></p>
+<table>
+    <thead>
+        <th>Result</th>
+        <td>Probability</td>
+    </thead>
+    <tbody>
+        <% for (let i = 0; i < table.resultIDsResultNamesProbs.length; i++) { %>
+            <tr>
+                <% if (locals.outcomeGenID && outcomeGenID === table.resultIDsResultNamesProbs[i][0]) { %>
+                    <th style="color: red"><%= table.resultIDsResultNamesProbs[i][1] %></th>
+                <% } else { %>
+                    <th><%= table.resultIDsResultNamesProbs[i][1] %></th>
+                <% }; %>
+                    <td><%= table.resultIDsResultNamesProbs[i][2] %></td>
+                    <td><span>%</span></td>
+                    <td><a href="/outcomes/<%= table.resultIDsResultNamesProbs[i][0] %>">View</a></td>
+            </tr>
+        <% } %>
+    </tbody>
+    <tfoot>
+    </tfoot>
+</table>
+<br>
+<a href="/tables/<%= table.id %>/edit">Edit</a>
+<%- include(`../partials/deleteForm`, { url: `/tables/${table.id}` }); %>

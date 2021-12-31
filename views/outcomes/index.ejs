@@ -1,0 +1,13 @@
+<h2>Browse Outcomes</h2>
+<form action="/outcomes" method="GET">
+    <label for="name">Name</label>
+    <input type="text" name="name" value="<%= searchOptions.name %>">
+    <button type="submit">Search</button>
+</form>
+<br>
+<% outcomes.forEach(outcome => { %>
+    <div><%= outcome.name %></div>
+    <a href="/outcomes/<%= outcome.id %>">View</a>
+    <a href="/outcomes/<%= outcome.id %>/edit">Edit</a>
+    <%- include(`../partials/deleteForm`, { url: `/outcomes/${outcome.id}` }); %>
+<% }); %>

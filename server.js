@@ -11,11 +11,16 @@ const flash = require(`express-flash`);
 const session = require(`express-session`);
 const bodyParser = require(`body-parser`);
 const methodOverride = require(`method-override`);
+const jquery = require(`jquery`);
+// const jsdom = require(`jsdom`);
+// const dom = new jsdom.JSDOM("");
+// const jquery = require("jquery")(dom.window);
+const ejs = require(`ejs`); // need?
  
 const loginRouter = require(`./routes/login`);
 const indexRouter = require(`./routes/index`);
 const registerRouter = require(`./routes/register`);
-const resultRouter = require(`./routes/results`);
+const outcomeRouter = require(`./routes/outcomes`);
 const tableRouter = require(`./routes/tables`);
 const genRouter = require(`./routes/gen`);
 
@@ -54,9 +59,10 @@ app.use(methodOverride(`_method`));
 app.use(`/`, indexRouter);
 app.use(`/login`, loginRouter);
 app.use(`/register`, registerRouter);
-app.use(`/results`, resultRouter);
+app.use(`/outcomes`, outcomeRouter);
 app.use(`/tables`, tableRouter);
 app.use(`/gen`, genRouter);
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 const users = [];
 

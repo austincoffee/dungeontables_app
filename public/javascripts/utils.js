@@ -1,4 +1,3 @@
-export {u};
 const u = {};
 
 u.doSomething = () => console.log(`did something!`);
@@ -215,6 +214,8 @@ u.rtnChildObjFrmParentObjAndStr = (parentObj, str) => {
     return parentObj[prop];
   }
 }
+
+module.exports = u;
 
 
 // notes:

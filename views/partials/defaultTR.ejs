@@ -1,0 +1,14 @@
+<tr>
+    <th>
+        <label for="result-select"></label>
+        <select id="result-select">
+            <% outcomes.forEach(outcome => { %>
+                <option value="<%= outcome.id %>"><%= outcome.name %></option>
+            <% }) %>
+            <% tables.forEach(table => { %>
+                <option value="<%= table.id %>"><%= table.name %></option>
+            <% }) %>
+        </select>
+    </th>
+    <td><input type="text"></td>
+</tr>

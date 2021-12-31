@@ -1,1 +1,11 @@
-Create Table Form
+<!-- ensure probability is always a number -->
+<h2>Create Table</h2>
+<form action="/tables" method="POST">
+    <%- include(`_form_fields`); %>
+    <br>
+    <a href="/tables">Cancel</a>
+    <button type="submit">Create</button>
+    <br>
+    <br>
+    <%- include(`_table`); %>
+</form>
