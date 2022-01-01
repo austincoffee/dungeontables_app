@@ -214,6 +214,7 @@ u.rtnChildObjFrmParentObjAndStr = (parentObj, str) => {
     return parentObj[prop];
   }
 }
+u.hasDuplicates = arr => (new Set(arr)).size !== arr.length;
 
 module.exports = u;
 

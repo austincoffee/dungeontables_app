@@ -2,11 +2,15 @@
 <form action="/tables/<%= table.id %>/gen" method="POST">
     <button type="submit">Generate!</button>
 </form>
+<% if (locals.outcomeGenName) { %>
+    <h3>Outcome</h3>
+    <h4><%= outcomeGenName %></h4>
+<% }; %>
 <p><%= table.dsc %></p>
 <table>
     <thead>
         <th>Result</th>
-        <td>Probability</td>
+        <td colspan="2">Probability</td>
     </thead>
     <tbody>
         <% for (let i = 0; i < table.resultIDsResultNamesProbs.length; i++) { %>
@@ -16,15 +20,27 @@
                 <% } else { %>
                     <th><%= table.resultIDsResultNamesProbs[i][1] %></th>
                 <% }; %>
-                    <td><%= table.resultIDsResultNamesProbs[i][2] %></td>
+                    <td style="text-align: right;"><%= table.resultIDsResultNamesProbs[i][2] %></td>
                     <td><span>%</span></td>
+                <% if (resultIDsResultNamesProbs[i][3] === `table`) { %>
+                    <td><a href="/tables/<%= table.resultIDsResultNamesProbs[i][0] %>">View</a></td>
+                <% } else { %>
                     <td><a href="/outcomes/<%= table.resultIDsResultNamesProbs[i][0] %>">View</a></td>
+                <% }; %>
             </tr>
         <% } %>
     </tbody>
     <tfoot>
     </tfoot>
 </table>
+<% if (locals.appearsIn.length) { %>
+    <h3>Appears In</h3>
+        <ul>
+            <% for (let i = 0; i < appearsIn.length; i++) { %>
+                <li><a href="/tables/<%= appearsIn[i].id %>"><%= appearsIn[i].name %></a></li>
+            <% }; %>
+        </ul>
+<% }; %>
 <br>
 <a href="/tables/<%= table.id %>/edit">Edit</a>
 <%- include(`../partials/deleteForm`, { url: `/tables/${table.id}` }); %>

@@ -1,5 +1,13 @@
 <h2><%= outcome.name %></h2>
 <p><%= outcome.dsc %></p>
+<% if (locals.appearsIn.length) { %>
+    <h3>Appears In</h3>
+        <ul>
+            <% for (let i = 0; i < appearsIn.length; i++) { %>
+                <li><a href="/tables/<%= appearsIn[i].id %>"><%= appearsIn[i].name %></a></li>
+            <% }; %>
+        </ul>
+<% }; %>
 <a href="<%= outcome.href %>">Link</a>
 <a href="/outcomes/<%= outcome.id %>/edit">Edit</a>
 <%- include(`../partials/deleteForm`, { url: `/outcomes/${outcome.id}` }); %> 

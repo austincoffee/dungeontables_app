@@ -1,9 +1,6 @@
 const mongoose = require(`mongoose`);
 const Table = require(`./table`);
 
-// set up constraint: can't delete Outcome if it exists in a Table
-// https://youtu.be/UIf1Lh9OZ-k?t=1205
-
 const outcomeSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -15,7 +12,7 @@ const outcomeSchema = new mongoose.Schema({
     dsc: {
         type: String
     },
-    assocTables: {
+    assocTables: { // not sure if this should be here, because if the table deletes the outcome, then this won't change
         type: Array,
     }
     // source: {
@@ -31,37 +28,21 @@ const outcomeSchema = new mongoose.Schema({
 });
 
 outcomeSchema.pre(`remove`, async function(next) {
-    // iterate through all tables associated with Outcome
-    // console.log(this);
-    // for (let i = 0; i < this.assocTables.length; i++) {
-    //     console.log(this.assocTables[i]);
-    // }
 
-    // first get an array of every single ID in every single table.resultIDsResultNamesProbs
-    // next, iterate through that array, and if any id matches this.id, don't delete
+    // old
     try {
         const allTables = await Table.find();
         for (let i = 0; i < allTables.length; i++) {
-            for (let i = 0; i < allTables[i].resultIDsResultNamesProbs.length; i++) {
-                if (allTables[i].resultIDsResultNamesProbs[i][0] === this.id) {
+            for (let j = 0; j < allTables[i].resultIDsResultNamesProbs.length; j++) {
+                if (allTables[i].resultIDsResultNamesProbs[j][0] === this.id) {
                     throw `Cannot delete an Outcome that is part of a Table.`;
                 };
-            }
+            };
         };
         next();
     } catch (e) {
         next(e);
     };
-
-    // Table.find({ resultIDsResultNamesProbs: /*containing*/ this.id }, (err, tables) => {
-    //     if (err) {
-    //         next(err);
-    //     } else if (tables.length > 0) {
-    //         next(new Error(`Cannot delete Outcome that is part of a table.`));
-    //     } else {
-    //         next();
-    //     };
-    // });
 });
 
 module.exports = mongoose.model(`Outcome`, outcomeSchema);

@@ -1,12 +1,13 @@
 const express = require(`express`);
 const router = express.Router();
 const Outcome = require(`../models/outcome`);
+const Table = require(`../models/table`);
 
 router.get(`/`, async (req, res) => {
     let searchOptions = {};
     if (req.query != null && req.query != ``) {
         searchOptions.name = new RegExp(req.query.name, `i`);
-    }
+    };
     try {
         const outcomes = await Outcome.find(searchOptions);
         res.render(`outcomes/index`, {
@@ -15,7 +16,7 @@ router.get(`/`, async (req, res) => {
         });
     } catch {
         res.redirect(`/`);
-    }
+    };
 });
 
 router.get(`/new`, (req, res) => {
@@ -40,20 +41,38 @@ router.post(`/`, async (req, res) => {
             outcome: outcome,
             errorMessage: `Error creating Outcome.`
         });
-    }
+    };
 });
 
 router.get(`/:id`, async (req, res) => {
     try {
         const outcome = await Outcome.findById(req.params.id);
-        // Show tables that the outcome is a part of
-        // https://youtu.be/UIf1Lh9OZ-k?t=1643
+        const allTables = await Table.find();
+        let appearsIn = [];
+
+        // new
+        // for (let i = 0; i < allTables.length; i++) {
+        //     for (let k = 0; k < allTables[i].resultIDs.length; k++) {
+        //         if (allTables[i].resultIDs[k] !== outcome.id) continue;
+        //         appearsIn = [...appearsIn, allTables[i]];
+        //     };
+        // };
+
+        // old
+        for (let i = 0; i < allTables.length; i++) {
+            for (let k = 0; k < allTables[i].resultIDsResultNamesProbs.length; k++) {
+                if (allTables[i].resultIDsResultNamesProbs[k][0] !== outcome.id) continue;
+                appearsIn = [...appearsIn, allTables[i]];
+            };
+        };
+
         res.render(`outcomes/show`, {
-            outcome: outcome
+            outcome: outcome,
+            appearsIn: appearsIn
         });
     } catch {
         res.redirect(`/`);
-    }
+    };
 });
 
 router.get(`/:id/edit`, async (req, res) => {
@@ -62,7 +81,7 @@ router.get(`/:id/edit`, async (req, res) => {
         res.render(`outcomes/edit`, { outcome: outcome });
     } catch {
         res.redirect(`/outcomes`);
-    }
+    };
 });
 
 router.put(`/:id`, async (req, res) => {
@@ -82,23 +101,34 @@ router.put(`/:id`, async (req, res) => {
                 outcome: outcome,
                 errorMessage: `Error updating Outcome.`
             });
-        }
-    }
+        };
+    };
 });
 
 router.delete(`/:id`, async (req, res) => {
     let outcome;
     try {
         outcome = await Outcome.findById(req.params.id);
-        await outcome.remove ();
+
+        // // new // see "old" in model
+        // const allTables = await Table.find();
+        // for (let i = 0; i < allTables.length; i++) {
+        //     for (let k = 0; k < allTables[i].resultIDs.length; k++) {
+        //         if (allTables[i].resultIDs[k] === outcome.id) {
+        //             throw `Cannot delete an Outcome that is part of a Table.`;
+        //         };
+        //     };
+        // };
+
+        await outcome.remove();
         res.redirect(`/outcomes`);
     } catch {
         if (outcome == null) {
             res.redirect(`/`);
         } else {
             res.redirect(`/outcomes/${outcome.id}`);
-        }
-    }
+        };
+    };
 });
 
 module.exports = router;
