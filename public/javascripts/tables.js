@@ -168,7 +168,7 @@ class T {
     rtnWeightSumOfTable(tableCopy) {
       let weightSum = 0;
       for (const ent in tableCopy.ents) {
-        const entWeight = tableCopy.ents[ent][1];
+        const entWeight = Number.parseFloat(tableCopy.ents[ent][1]);
         weightSum += entWeight;
       }
       const weightSumRound = u.roundToDecimalPlaces(weightSum, 4);

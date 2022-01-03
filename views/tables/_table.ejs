@@ -1,41 +1,43 @@
 <table id="table">
-    <thead>
-        <tr>
-            <th>Result</th>
-            <td>Probability</td>
-        </tr>
-    </thead>
-    <tbody>
-        <% for (let i = 0; i < 100; i++) { %>
-            <tr>
-                <th>
-                    <label for="result"></label>
-                    <select id="result" name="result">
-                        <% if (table.resultIDsResultNamesProbs[i]) { %>
-                            <option selected value="<%= table.resultIDsResultNamesProbs[i][0] %>"><%= table.resultIDsResultNamesProbs[i][1] %></option>
-                        <% } else { %>
-                            <option selected value=""></option>
-                        <% }; %>
-                        <% outcomes.forEach(outcome => { %>
-                            <option value="<%= outcome.id %>"><%= outcome.name %></option>
-                        <% }); %>
-                        <% tables.forEach(table => { %>
-                            <option value="<%= table.id %>"><%= table.name %></option>
-                        <% }); %>
-                            <option value=""></option>
-                    </select>
-                </th>
-                <% if (table.resultIDsResultNamesProbs[i]) { %>
-                    <td><input type="text" name="prob" value="<%= table.resultIDsResultNamesProbs[i][2] %>"
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></td>
-                <% } else { %>
-                    <td><input type="text" name="prob"
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></td>
-                <% }; %>
-                    <td><span>%</span></td>
-            </tr>
-        <% }; %>
-    </tbody>
-    <tfoot>
-    </tfoot>
+  <thead>
+    <tr>
+      <th>Result</th>
+      <td>Probability</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% for (let i = 0; i < 100; i++) { %>
+      <tr>
+        <th>
+          <label for="result"></label>
+          <select id="result" name="result">
+            <% if (table.resultIDs[i]) { %>
+              <option selected value="<%= table.resultIDs[i] %>"><%= resultNames[i] %></option>
+            <% } else { %>
+              <option selected value=""></option>
+            <% }; %>
+            <% allOutcomes.forEach(allOutcome => { %>
+              <option value="<%= allOutcome.id %>"><%= allOutcome.name %></option>
+            <% }); %>
+            <% allTables.filter(allTable => allTable.id !== table.id).forEach(allTable => { %>s
+              <option value="<%= allTable.id %>"><%= allTable.name %></option>
+            <% }); %>
+              <option value=""></option>
+          </select>
+        </th>
+        <td>
+          <% if (table.resultIDs[i]) { %>
+            <input type="text" name="prob" value="<%= table.resultProbs[i] %>"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+          <% } else { %>
+            <input type="text" name="prob"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+          <% }; %>
+        </td>
+          <td><span>%</span></td>
+      </tr>
+    <% }; %>
+  </tbody>
+  <tfoot>
+  </tfoot>
 </table>

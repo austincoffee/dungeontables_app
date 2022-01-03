@@ -1,46 +1,71 @@
 <h2><%= table.name %></h2>
-<form action="/tables/<%= table.id %>/gen" method="POST">
-    <button type="submit">Generate!</button>
+<form action="/tables/<%= table._id %>/gen" method="POST">
+  <button type="submit">Generate!</button>
 </form>
-<% if (locals.outcomeGenName) { %>
-    <h3>Outcome</h3>
-    <h4><%= outcomeGenName %></h4>
+<% if (locals.outcomeGenPath) { %>
+  <h4>Outcome</h4>
+  <h3 class="generated">
+    <%= outcomeGenPath[outcomeGenPath.length - 1].name %>
+  </h3>
+  <a href="/outcomes/<%= outcomeGenPath[outcomeGenPath.length - 1]._id %>">View</a>
+  <br>
+  <br>
 <% }; %>
 <p><%= table.dsc %></p>
-<table>
-    <thead>
-        <th>Result</th>
-        <td colspan="2">Probability</td>
-    </thead>
-    <tbody>
-        <% for (let i = 0; i < table.resultIDsResultNamesProbs.length; i++) { %>
-            <tr>
-                <% if (locals.outcomeGenID && outcomeGenID === table.resultIDsResultNamesProbs[i][0]) { %>
-                    <th style="color: red"><%= table.resultIDsResultNamesProbs[i][1] %></th>
-                <% } else { %>
-                    <th><%= table.resultIDsResultNamesProbs[i][1] %></th>
-                <% }; %>
-                    <td style="text-align: right;"><%= table.resultIDsResultNamesProbs[i][2] %></td>
-                    <td><span>%</span></td>
-                <% if (resultIDsResultNamesProbs[i][3] === `table`) { %>
-                    <td><a href="/tables/<%= table.resultIDsResultNamesProbs[i][0] %>">View</a></td>
-                <% } else { %>
-                    <td><a href="/outcomes/<%= table.resultIDsResultNamesProbs[i][0] %>">View</a></td>
-                <% }; %>
-            </tr>
-        <% } %>
-    </tbody>
-    <tfoot>
-    </tfoot>
+<table class="show">
+  <thead>
+    <th>Result</th>
+    <td>Probability</td>
+  </thead>
+  <tbody>
+    <%
+      let tbodyHTML = ``;
+      const indentUnit = 37;
+      let indent = indentUnit;
+      const displayEnts = (table, indent) => {
+        for (let i = 0; i < table.ents.length; i++) {
+          table.ents[i][0].isGenerated = ``;
+          const idToTest = (JSON.stringify(table.ents[i][0]._id));
+          const idToTestParsed = idToTest.replace(/"/g, ``);
+          if (locals.outcomeGenPath) {
+            if (idToTestParsed === outcomeGenPath[outcomeGenPath.length - 1]._id) {
+              table.ents[i][0].isGenerated = `generated`;
+            };
+          }
+          let outcomesOrTables;
+          table.ents[i][0].ents ? outcomesOrTables = `tables` : outcomesOrTables = `outcomes`;
+          tbodyHTML +=
+            `<tr style="text-indent: ${indent}px">
+              <th class="${table.ents[i][0].isGenerated}">${table.ents[i][0].name}</th>
+              <td>${table.ents[i][1]}%</td>
+              <td class="view"><a href="/${outcomesOrTables}/${table.ents[i][0]._id}">View</a></td>
+            </tr>`;
+          if (table.ents[i][0].ents) {
+            indent += indentUnit;
+            displayEnts(table.ents[i][0], indent);
+            indent -= indentUnit;
+          };
+          table.ents[i][0].isGenerated = ``;
+        };
+      };
+      displayEnts(table, indent);
+    %>
+    <%- tbodyHTML %>
+  </tbody>
+  <tfoot>
+  </tfoot>
 </table>
 <% if (locals.appearsIn.length) { %>
-    <h3>Appears In</h3>
-        <ul>
-            <% for (let i = 0; i < appearsIn.length; i++) { %>
-                <li><a href="/tables/<%= appearsIn[i].id %>"><%= appearsIn[i].name %></a></li>
-            <% }; %>
-        </ul>
+  <h3>Appears In</h3>
+    <ul>
+      <% for (let i = 0; i < appearsIn.length; i++) { %>
+        <li><a href="/tables/<%= appearsIn[i].id %>"><%= appearsIn[i].name %></a></li>
+      <% }; %>
+    </ul>
 <% }; %>
 <br>
-<a href="/tables/<%= table.id %>/edit">Edit</a>
-<%- include(`../partials/deleteForm`, { url: `/tables/${table.id}` }); %>
+<a href="/tables/<%= table._id %>/edit">Edit</a>
+<%- include(`../partials/deleteForm`, { url: `/tables/${table._id}` }); %>
+<script>
+      
+</script>
