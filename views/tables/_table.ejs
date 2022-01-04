@@ -2,11 +2,24 @@
   <thead>
     <tr>
       <th>Result</th>
-      <td>Probability</td>
+      <td colspan="3">Probability</td>
     </tr>
   </thead>
   <tbody>
-    <% for (let i = 0; i < 100; i++) { %>
+    <%
+      let trCountEJS = 5;
+      if (table.resultIDs.length) {
+        trCountEJS = table.resultIDs.length;
+      };
+      if (locals.trCount) {
+        trCountEJS = Number.parseInt(trCount);
+      };
+      const trCountPlus = trCountEJS + 1;
+      const trCountMinus = trCountEJS - 1;
+      let newOrEdit;
+      (table.resultIDs.length > 0) ? newOrEdit = `edit` : newOrEdit = `new`;
+    %>
+    <% for (let i = 0; i < trCountEJS; i++) { %>
       <tr>
         <th>
           <label for="result"></label>
@@ -27,10 +40,10 @@
         </th>
         <td>
           <% if (table.resultIDs[i]) { %>
-            <input type="text" name="prob" value="<%= table.resultProbs[i] %>"
+            <input class="prob" type="text" name="prob" value="<%= table.resultProbs[i] %>"
               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
           <% } else { %>
-            <input type="text" name="prob"
+            <input class="prob" type="text" name="prob"
               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
           <% }; %>
         </td>
@@ -41,3 +54,6 @@
   <tfoot>
   </tfoot>
 </table>
+<br>
+<button type="submit" name="modifyRowValues" value="<%= [trCountPlus, newOrEdit] %>" form="modifyRows">Add Row</button>
+<button type="submit" name="modifyRowValues" value="<%= [trCountMinus, newOrEdit] %>" form="modifyRows">Remove Row</button>

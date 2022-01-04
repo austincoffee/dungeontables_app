@@ -1,10 +1,12 @@
 <h2>Edit Table</h2>
-<form action="/tables/<%= table.id %>?_method=PUT" method="POST">
+<form action="/tables/<%= table.id %>?_method=PUT" method="POST" id="updateForm">
   <%- include(`_form_fields`); %>
+  <%- include(`_table`); %>
+  <br>
   <br>
   <a href="/tables/<%= table.id %>">Cancel</a>
-  <button type="submit">Update</button>
-  <br>
-  <br>
-  <%- include(`_table`); %>
+  <button type="submit" form="updateForm">Update</button>
+</form>
+<br>
+<form id="modifyRows" action="/tables/<%= table.id %>/modifyRows" method="POST">
 </form>

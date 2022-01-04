@@ -36,7 +36,6 @@ router.post(`/`, async (req, res) => {
   const table = new Table({
     name: req.body.name,
     dsc: req.body.dsc,
-    // resultTypes: resultTypes
   });
   try {
     allOutcomes = await Outcome.find();
@@ -47,22 +46,11 @@ router.post(`/`, async (req, res) => {
     resultProbsPosted = rtnResultProbsPosted(req.body.prob, req.body.result);
     table.resultProbs = resultProbsPosted;
     const results_id_prob = rtnResults_id_prob(resultIDsSubmitted, resultProbsPosted);
-    if (u.hasDuplicates(resultNames)) {
-      throw `Each Result must have a unique name.`;
-    };
-    for (let i = 0; i < req.body.prob.length; i++) {
-      if (!req.body.prob[i] || !req.body.result[i]) continue;
-      if (!parseFloat(req.body.prob[i])) throw `Probabilities must be Numbers.`;
-    };
-    if (resultIDsSubmitted.length < 2) {
-      throw `Table must have at least 2 Results`;
-    };
-    for (let i = 0; i < results_id_prob.length; i++) {
-      if (!results_id_prob[i][1]) {
-        throw `Each Result must have a Probability.`;
-        // Eventually, if prob is left blank, set it equal to the average value instead (can be disabled in "Advanced")
-      };
-    };
+    valName(req.body.name);
+    valTableLength(resultIDsSubmitted);
+    valDuplicates(resultNames);
+    valHasProbabilities(results_id_prob); // If prob is blank, set to average value (can be disabled in "Advanced")
+    valProbabilityNumbers(req.body.prob, req.body.result);
     const newTable = await table.save();
     res.redirect(`tables/${newTable.id}`);
   } catch (e) {
@@ -119,27 +107,16 @@ router.put(`/:id`, async (req, res) => {
     table = await Table.findById(req.params.id);
     allOutcomes = await Outcome.find();
     allTables = await Table.find();
-    const resultIDsSubmitted = rtnResultIDsSubmitted(req.body.result); // change "Posted"
+    const resultIDsSubmitted = rtnResultIDsSubmitted(req.body.result);
+    valTableDoesNotContainItself(table.id, resultIDsSubmitted);
     [resultNames] = await rtnPostedResultNamesAndTypes(resultIDsSubmitted);
+    valName(req.body.name);
+    valTableLength(resultIDsSubmitted);
+    valDuplicates(resultNames);
     const resultProbsPosted = rtnResultProbsPosted(req.body.prob, req.body.result);
     const results_id_prob = rtnResults_id_prob(resultIDsSubmitted, resultProbsPosted);
-    valTableDoesNotContainItself(table.id, resultIDsSubmitted);
-    if (u.hasDuplicates(resultNames)) {
-      throw `Each Result must have a unique name.`;
-    };
-    for (let i = 0; i < req.body.prob.length; i++) {
-      if (!req.body.prob[i] || !req.body.result[i]) continue;
-      if (!parseFloat(req.body.prob[i])) throw `Probabilities must be Numbers.`;
-    };
-    if (resultNames.length < 2) {
-      throw `Table must have at least 2 Results`;
-    };
-    for (let i = 0; i < results_id_prob.length; i++) {
-      if (!results_id_prob[i][1]) {
-        throw `Each Result must have a Probability.`;
-        // Eventually, if prob is left blank, set it equal to the average value instead (can be disabled in "Advanced")
-      };
-    };
+    valHasProbabilities(results_id_prob);
+    valProbabilityNumbers(req.body.prob, req.body.result);
     table.name = req.body.name;
     table.dsc = req.body.dsc;
     table.resultIDs = resultIDsSubmitted;
@@ -194,7 +171,6 @@ router.delete(`/:id`, async (req, res) => {
   };
 });
 
-// new
 router.post(`/:id/gen`, async (req, res) => {
   try {
     const tableParsed = await rtnTableParsed(req.params.id);
@@ -214,6 +190,35 @@ router.post(`/:id/gen`, async (req, res) => {
   };
 });
 
+router.post(`/:id/modifyRows`, async(req, res) => {
+  const [trCount, newOrEdit] = req.body.modifyRowValues.split(`,`);
+  try {
+    const allTables = await Table.find();
+    const allOutcomes = await Outcome.find();
+    if (newOrEdit === `new`) {
+      res.render(`tables/new`, {
+        allTables: allTables,
+        allOutcomes: allOutcomes,
+        table: new Table(),
+        trCount: trCount
+      });
+    } else if (newOrEdit === `edit`) {
+      const table = await Table.findById(req.params.id);
+      const [resultNames] = await rtnPostedResultNamesAndTypes(table.resultIDs);
+      res.render(`tables/edit`, {
+        table: table,
+        allTables: allTables,
+        allOutcomes: allOutcomes,
+        resultNames: resultNames,
+        trCount: trCount
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.redirect(`/tables`);
+  };
+});
+
 const rtnAppearsIn = async id => {
   try {
     const allTables = await Table.find();
@@ -225,28 +230,33 @@ const rtnAppearsIn = async id => {
       };
     };
     return appearsIn;
-  } catch { // does this actually work?
+  } catch (e) { // does this actually work?
+    console.log(e);
     res.render(`/`);
   }
 };
 
-const rtnOutcomeGenID = (name, results) => {
-  for (let i = 0; i < results.length; i++) {
-    if (results[i][1] !== name) continue;
-    return results[i][0];
-  }
-  throw `The name of the provided Outcome does not match any Results in the Table.`;
-};
-
-// new
-const rtnResultIDsSubmitted = reqBodyResult => {
+// new // don't use this
+const rtnResultIDsSubmitted = reqBodyResult => { // should never have to handle one value
+  let reqBodyResultParsed = reqBodyResult;
+  if (!Array.isArray(reqBodyResult)) reqBodyResultParsed = [reqBodyResult];
   let resultIDsSubmitted = [];
-    for (let i = 0; i < reqBodyResult.length; i++) {
-      if (!reqBodyResult[i]) continue;
-      resultIDsSubmitted = [...resultIDsSubmitted, reqBodyResult[i], ];
-    };
+  for (let i = 0; i < reqBodyResultParsed.length; i++) {
+    if (!reqBodyResultParsed[i]) continue;
+    resultIDsSubmitted = [...resultIDsSubmitted, reqBodyResultParsed[i], ];
+  };
   return resultIDsSubmitted;
 };
+
+// old - use this
+// const rtnResultIDsSubmitted = reqBodyResult => { // should never have to handle one value
+//   let resultIDsSubmitted = [];
+//   for (let i = 0; i < reqBodyResult.length; i++) {
+//     if (!reqBodyResult[i]) continue;
+//     resultIDsSubmitted = [...resultIDsSubmitted, reqBodyResult[i], ];
+//   };
+//   return resultIDsSubmitted;
+// };
 
 const rtnPostedResultNamesAndTypes = async (resultIDsSubmitted) => {
   try {
@@ -263,8 +273,8 @@ const rtnPostedResultNamesAndTypes = async (resultIDsSubmitted) => {
     };
     const resultNamesAndTypes = [resultNames, resultTypes];
     return resultNamesAndTypes;
-  } catch {
-    console.log(`rtnPostedResultNamesAndTypes ERROR`);
+  } catch (e) {
+    console.log(e);
     res.render(`/`);
   }
 };
@@ -281,27 +291,9 @@ const rtnResultProbsPosted = (reqBodyProb, reqBodyResult) => {
 const rtnResults_id_prob = (resultIDsSubmitted, resultProbsPosted) => {
   let rtnResults_id_prob = [];
   for (let i = 0; i < resultIDsSubmitted.length; i++) {
-    // rtnResults_id_prob = [...rtnResults_id_prob, [resultIDsSubmitted[i], resultNames[i], resultProbsPosted[i], resultTypes[i], ], ];
     rtnResults_id_prob = [...rtnResults_id_prob, [ resultIDsSubmitted[i], resultProbsPosted[i], ], ];
   };
   return rtnResults_id_prob;
-};
-
-const rtnResultNames = async table => {
-  let resultNames = [];
-  try {
-    for (let i = 0; i < table.resultIDs.length; i++) {
-      const isTable = await Table.findById(table.resultIDs[i]);
-      const isOutcome = await Outcome.findById(table.resultIDs[i]);
-      let resultName;
-      isTable ? resultName = isTable.name : resultName = isOutcome.name;
-      resultNames = [...resultNames, resultName, ];
-    };
-    return resultNames;
-  } catch {
-    console.log(`tables.js rtnResultNames error TEST`);
-    res.render(`/`);
-  }
 };
 
 const rtnDoesTableContainItself = (tableID, resultIDs) => {
@@ -375,6 +367,44 @@ const parseResults = async (table, results) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+const rtnNewOrEdit = reqBody => {
+  console.log(reqBody);
+  if (typeof reqBody.resultIDs == null) {
+    return false;
+  } else return true;
+};
+
+const valName = (reqBodyName) => {
+  if (!reqBodyName) throw `DungeonTable is missing a Name.`
+};
+
+const valTableLength = resultIDsSubmitted => {
+  if (resultIDsSubmitted.length < 2) {
+    throw `Table must have at least 2 Results.`;
+  };
+};
+
+const valDuplicates = resultNames => {
+  if (u.hasDuplicates(resultNames)) {
+    throw `Each Result must have a unique Name.`;
+  };
+};
+
+const valHasProbabilities = results_id_prob => {
+  for (let i = 0; i < results_id_prob.length; i++) {
+    if (!results_id_prob[i][1]) {
+      throw `Each Result must have a Probability.`;
+    };
+  };
+};
+
+const valProbabilityNumbers = (reqBodyProb, reqBodyResult) => {
+  for (let i = 0; i < reqBodyProb.length; i++) {
+    if (!reqBodyProb[i] || !reqBodyResult[i]) continue;
+    if (!parseFloat(reqBodyProb[i])) throw `Probabilities must be Numbers.`;
+  };
 };
 
 module.exports = router;

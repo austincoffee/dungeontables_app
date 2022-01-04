@@ -17,7 +17,7 @@ table.show th {
 }
 
 tr {
-  height: 25px;
+  height: 27px;
 }
 
 td.view {
@@ -26,4 +26,8 @@ td.view {
 
 .generated {
   color: red;
+}
+
+input.prob {
+  width: 50px;
 }
