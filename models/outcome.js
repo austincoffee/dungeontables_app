@@ -12,6 +12,9 @@ const outcomeSchema = new mongoose.Schema({
   dsc: {
     type: String
   },
+  userID: {
+    type: String,
+  }
   // source: {
   //   sourceName: {
   //     type: String,

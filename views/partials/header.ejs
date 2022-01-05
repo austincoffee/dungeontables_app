@@ -9,4 +9,7 @@
       <li><a href="/tables/new">Create Table</a></li>
     </ul>
   </nav>
+  <% if (locals.user) { %>
+    <h2>Hi <%= user.username %></h2>
+  <% }; %>
 </header>

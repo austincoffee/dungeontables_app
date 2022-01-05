@@ -13,6 +13,9 @@ const tableSchema = new mongoose.Schema({
   },
   resultProbs: {
     type: Array
+  },
+  userID: {
+    type: String
   }
 });
 

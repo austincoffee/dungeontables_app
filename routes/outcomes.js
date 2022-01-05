@@ -28,11 +28,13 @@ router.post(`/`, async (req, res) => {
     name: req.body.name,
     href: req.body.href,
     dsc: req.body.dsc
+    // user: user.id
     // source: { // advanced feature to be toggled
     //   sourceName: req.body.sourceName,
     //   sourceLink: req.body.sourceLink
     // }
   });
+  if (req[`user`]) outcome.userID = req[`user`].id;
   try {
     const newOutcome = await outcome.save();
     res.redirect(`outcomes/${newOutcome.id}`);

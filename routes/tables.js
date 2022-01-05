@@ -35,8 +35,9 @@ router.post(`/`, async (req, res) => {
   let allOutcomes, allTables, resultIDsSubmitted, resultProbsPosted, resultNames;
   const table = new Table({
     name: req.body.name,
-    dsc: req.body.dsc,
+    dsc: req.body.dsc
   });
+  if (req[`user`]) table.userID = req[`user`].id;
   try {
     allOutcomes = await Outcome.find();
     allTables = await Table.find();
@@ -52,6 +53,7 @@ router.post(`/`, async (req, res) => {
     valHasProbabilities(results_id_prob); // If prob is blank, set to average value (can be disabled in "Advanced")
     valProbabilityNumbers(req.body.prob, req.body.result);
     const newTable = await table.save();
+    console.log(newTable);
     res.redirect(`tables/${newTable.id}`);
   } catch (e) {
     if (!table || !allOutcomes || !allTables) {
